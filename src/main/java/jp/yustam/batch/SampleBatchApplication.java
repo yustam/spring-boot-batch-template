@@ -14,6 +14,13 @@
 
 package jp.yustam.batch;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Properties;
+
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.StepContribution;
@@ -49,9 +56,25 @@ public class SampleBatchApplication {
   protected Tasklet tasklet() {
     return new Tasklet() {
       @Override
-      public RepeatStatus execute(StepContribution contribution, ChunkContext context) {
+      public RepeatStatus execute(StepContribution contribution, ChunkContext context)
+          throws SQLException {
         System.out.println("Hello, world!");
-        System.out.println(config.getDbAddress());
+        System.out.println(config.getHost());
+        System.out.println(config.getPort());
+
+        String url =
+            String.format("jdbc:postgresql://%s:%d/", config.getHost(), config.getPort());
+        Properties props = new Properties();
+        props.setProperty("user", "postgres");
+        // props.setProperty("password", "secret");
+        // props.setProperty("ssl", "true");
+        Connection conn = DriverManager.getConnection(url, props);
+        Statement statement = conn.createStatement();
+        ResultSet rs = statement.executeQuery("SELECT * FROM company;");
+        while (rs.next()) {
+          System.out.printf("%d %d %s\n", rs.getInt("id"), rs.getInt("code"), rs.getString("name"));
+        }
+
         return RepeatStatus.FINISHED;
       }
     };

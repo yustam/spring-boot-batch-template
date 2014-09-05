@@ -6,15 +6,26 @@ import org.springframework.stereotype.Component;
 @Component
 public class BatchConfig {
 
-  @Value("${hoge}")
-  private String dbAddress;
+  @Value("${db.host}")
+  private String host;
 
-  public String getDbAddress() {
-    return dbAddress;
+  @Value("${db.port}")
+  private int port;
+
+  public String getHost() {
+    return this.host;
   }
 
-  public void setDbAddress(String dbAddress) {
-    this.dbAddress = dbAddress;
+  public void setHost(String port) {
+    this.host = port;
+  }
+
+  public int getPort() {
+    return this.port;
+  }
+
+  public void setPort(int port) {
+    this.port = port;
   }
 
 }

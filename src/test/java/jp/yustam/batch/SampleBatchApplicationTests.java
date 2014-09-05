@@ -29,7 +29,7 @@ public class SampleBatchApplicationTests {
 
   @Test
   public void testDefaultSettings() throws Exception {
-    String args = "--hoge=hogehoge.com";
+    String[] args = {"--db.host=localhost", "--db.port=5432"};
     assertEquals(0,
         SpringApplication.exit(SpringApplication.run(SampleBatchApplication.class, args)));
     String output = this.outputCapture.toString();
