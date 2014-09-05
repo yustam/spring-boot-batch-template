@@ -28,3 +28,9 @@ CREATE TABLE artist (
 INSERT INTO artist (name, company_code) VALUES
   ('hoge band', '001'), ('hoge group', '001'), ('team hoge', '002');
 ```
+
+```
+$ docker run -d -name postgres -p 15432:5432 postgres
+$ docker build -t yustam/spring-batch .
+$ docker run --link postgres:db yustam/spring-batch
+```
